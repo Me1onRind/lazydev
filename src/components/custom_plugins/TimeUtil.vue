@@ -18,26 +18,27 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item style="margin-left:-30px">
+      <el-form-item style="margin-left:-30px" class="ymd">
         <span class="inline-flex items-center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
         <el-input-number v-model="year" :min="1970" :max="9999" :precision="0" :controls="false" class="input-0"/>
-        <span class="inline-flex items-center">&nbsp;-&nbsp;</span>
-        <el-input-number v-model="month" :min="1" :max="12" :precision="0" :controls="false" class="input-1"/>
-        <span class="inline-flex items-center">&nbsp;-&nbsp;</span>
-        <el-input-number v-model="day" :min="1" :max="31" :precision="0" :controls="false" class="input-1"/>
-        <span class="inline-flex items-center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-        <el-input-number v-model="hour" :min="0" :max="23" :precision="0" :controls="false" class="input-1"/>
-        <span class="inline-flex items-center">&nbsp;:&nbsp;</span>
-        <el-input-number v-model="minute" :min="0" :max="59" :precision="0" :controls="false" class="input-1"/>
-        <span class="inline-flex items-center">&nbsp;:&nbsp;</span>
-        <el-input-number v-model="second" :min="0" :max="50" :precision="0" :controls="false" class="input-1"/>
+        <span class="inline-flex items-center"><b>-</b></span>
+        <el-input-number v-model="month" :min="1" :max="12" :precision="0" :controls="false" class="input-1" />
+        <span class="inline-flex items-center"><b>-</b></span>
+        <el-input-number v-model="day" :min="1" :max="31" :precision="0" :controls="false" class="input-1" />
+        <span class="inline-flex items-center">&nbsp;&nbsp;</span>
+        <el-input-number v-model="hour" :min="0" :max="23" :precision="0" :controls="false" class="input-1" />
+        <span class="inline-flex items-center"><b>:</b></span>
+        <el-input-number v-model="minute" :min="0" :max="59" :precision="0" :controls="false" class="input-1" />
+        <span class="inline-flex items-center"><b>:</b></span>
+        <el-input-number v-model="second" :min="0" :max="50" :precision="0" :controls="false" class="input-1" />
+        <el-button type="primary" style="margin-left: 15px" @click="changeV2">confirm</el-button>
       </el-form-item>
     </el-row>
 
   </el-form>
   <el-table :data="tableData" border style="width: 360px" :cell-style="{background: 'revert'}" >
-    <el-table-column prop="format" label="Format" width="180px" align="center"/>
-    <el-table-column prop="date" label="Date" width="180px" align="center" />
+    <el-table-column prop="format" label="Format" width="180px" align="left"/>
+    <el-table-column prop="date" label="Date" width="180px" align="left" />
   </el-table>
 </template>
 
@@ -93,6 +94,10 @@ export default {
     change() {
       this.setDate(moment.unix(this.unixTimestamp).tz(this.timezone))
     },
+    changeV2() {
+      let s = this.year + "-" + this.month + "-" + this.day + " " + this.hour + ":" + this.minute + ":" + this.second
+      this.setDate(moment(s).tz(this.timezone))
+    },
   }
 }
 
@@ -100,14 +105,27 @@ export default {
 
 <style scoped>
 .input-0 {
-  width: 60px;
+  width: 45px;
 }
 
 .input-1 {
-  width: 45px;
+  width: 28px;
 }
 
 .row-2 span {
   padding-top: 3px;
 }
+
+.input-0 ::v-deep .el-input__wrapper {
+  padding: 1px !important;
+}
+
+.input-1 ::v-deep .el-input__wrapper {
+  padding: 1px !important;
+}
+
+::v-deep .cell {
+ padding-left: 8px !important;
+}
+
 </style>

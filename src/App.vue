@@ -6,7 +6,7 @@
         <el-main style="padding: 0px 60px;">
           <el-tabs
             v-model="editableTabsValue"
-            type="border-card"
+            type="card"
             class="demo-tabs"
             closable
             @tab-remove="removeTab"
