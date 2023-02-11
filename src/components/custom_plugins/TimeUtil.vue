@@ -35,9 +35,9 @@
     </el-row>
 
   </el-form>
-  <el-table :data="tableData" border style="width: 30%" :cell-style="{background: 'revert'}" >
-    <el-table-column prop="format" label="Format" width="200" align="center"/>
-    <el-table-column prop="date" label="Date" align="center" />
+  <el-table :data="tableData" border style="width: 360px" :cell-style="{background: 'revert'}" >
+    <el-table-column prop="format" label="Format" width="180px" align="center"/>
+    <el-table-column prop="date" label="Date" width="180px" align="center" />
   </el-table>
 </template>
 
