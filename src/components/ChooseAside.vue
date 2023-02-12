@@ -1,5 +1,5 @@
 <template>
-  <el-aside>
+  <el-aside width="220px">
     <el-input v-model="input" placeholder="Search" />
     <el-tree :data="data" :props="defaultProps" @node-click="handleNodeClick" default-expand-all />
   </el-aside>
@@ -9,6 +9,7 @@
 import { markRaw } from 'vue'
 import { CustomPlugin } from '../lib/custom-plugin'
 import TimeUtil from './custom_plugins/TimeUtil.vue'
+import JsonUtil from './custom_plugins/JsonUtil.vue'
 
 interface Tree {
   label: string
@@ -20,6 +21,7 @@ export default {
   data() {
     let plugins: CustomPlugin[] = [
       new CustomPlugin('Time', markRaw(TimeUtil)),
+      new CustomPlugin('Json', markRaw(JsonUtil)),
     ]
 
     let tmp = new Map()

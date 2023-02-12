@@ -1,15 +1,10 @@
 <template>
-  <el-form :inline="true">
-    <el-row>
-        <el-form-item label="Unix Timestamp">
-          <el-input v-model="unixTimestamp" style="width: 102px"/>
-          <el-button type="primary" style="margin-left: 30px" @click="now">Now</el-button>
-        </el-form-item>
-    </el-row>
-
-    <el-row style="margin-top:10px" class="row-2">
+  <el-row>
+    <el-form
+      label-width="130px"
+    >
       <el-form-item label="Timezone">
-        <el-select v-model="timezone" filterable @change="change" style="width:150px">
+        <el-select v-model="timezone" filterable @change="change" style="width:150px;">
           <el-option
             v-for="item in options"
             :key="item.value"
@@ -18,12 +13,21 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item style="margin-left:-30px" class="ymd">
-        <span class="inline-flex items-center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+
+       <el-form-item label="Unix Timestamp" style="margin-top: 50px;">
+         <el-input v-model="unixTimestampInput" style="width: 102px"/>
+         <el-button type="primary" style="margin-left: 15px" @click="confirm1">Confirm</el-button>
+         <el-button type="primary" style="margin-left: 15px" @click="now">Now</el-button>
+       </el-form-item>
+       <el-form-item v-bind:label="timezone">
+         <el-input v-model="dateOutput" style="width: 152px" :readonly="true"/>
+       </el-form-item>
+
+      <el-form-item v-bind:label="timezone" style="margin-top: 50px;">
         <el-input-number v-model="year" :min="1970" :max="9999" :precision="0" :controls="false" class="input-0"/>
-        <span class="inline-flex items-center"><b>-</b></span>
+        <span class="inline-flex items-center"><b>/</b></span>
         <el-input-number v-model="month" :min="1" :max="12" :precision="0" :controls="false" class="input-1" />
-        <span class="inline-flex items-center"><b>-</b></span>
+        <span class="inline-flex items-center"><b>/</b></span>
         <el-input-number v-model="day" :min="1" :max="31" :precision="0" :controls="false" class="input-1" />
         <span class="inline-flex items-center">&nbsp;&nbsp;</span>
         <el-input-number v-model="hour" :min="0" :max="23" :precision="0" :controls="false" class="input-1" />
@@ -31,15 +35,21 @@
         <el-input-number v-model="minute" :min="0" :max="59" :precision="0" :controls="false" class="input-1" />
         <span class="inline-flex items-center"><b>:</b></span>
         <el-input-number v-model="second" :min="0" :max="50" :precision="0" :controls="false" class="input-1" />
-        <el-button type="primary" style="margin-left: 15px" @click="changeV2">confirm</el-button>
+        <el-button type="primary" style="margin-left: 15px" @click="confirm2">confirm</el-button>
       </el-form-item>
+       <el-form-item label="Unix Timestamp">
+         <el-input v-model="unixTimestampOutput" style="width: 102px" :readonly="true"/>
+       </el-form-item>
+    </el-form>
+  </el-row>
+  <el-row>
+    <el-form :inline="true">
+
+    <el-row style="margin-top:10px" class="row-2">
     </el-row>
 
   </el-form>
-  <el-table :data="tableData" border style="width: 360px" :cell-style="{background: 'revert'}" >
-    <el-table-column prop="format" label="Format" width="180px" align="left"/>
-    <el-table-column prop="date" label="Date" width="180px" align="left" />
-  </el-table>
+    </el-row>
 </template>
 
 
@@ -58,7 +68,9 @@ export default {
     })
     let date = moment()
     return {
-      unixTimestamp: date.unix(),
+      unixTimestampInput: date.unix(),
+      dateOutput: date.format('YYYY/MM/DD HH:mm:ss'),
+
       year: date.year(),
       month: date.month()+1,
       day: date.date(),
@@ -66,13 +78,8 @@ export default {
       minute: date.minutes(),
       second: date.seconds(),
       timezone: moment.tz.guess(),
+      unixTimestampOutput: date.unix(),
       options: options,
-      tableData: [
-        {
-          format: 'YYYY-MM-DD HH:mm:ss',
-          date: date.format('YYYY-MM-DD HH:mm:ss'),
-        }
-      ],
     }
   },
   methods: {
@@ -89,10 +96,14 @@ export default {
       }
     },
     now() {
-      this.setDate(moment.tz(this.timezone))
+      let date = moment.tz(this.timezone)
+      this.unixTimestampInput = date.unix()
+      this.dateOutput = date.format('YYYY/MM/DD HH:mm:ss')
     },
-    change() {
-      this.setDate(moment.unix(this.unixTimestamp).tz(this.timezone))
+    confirm1() {
+      let date = moment.unix(this.unixTimestampInput).tz(this.timezone)
+      this.unixTimestampInput = date.unix()
+      this.dateOutput = date.format('YYYY/MM/DD HH:mm:ss')
     },
     changeV2() {
       let s = this.year + "-" + this.month + "-" + this.day + " " + this.hour + ":" + this.minute + ":" + this.second
@@ -116,16 +127,21 @@ export default {
   padding-top: 3px;
 }
 
-.input-0 ::v-deep .el-input__wrapper {
+.input-0 ::v-deep(.el-input__wrapper) {
   padding: 1px !important;
 }
 
-.input-1 ::v-deep .el-input__wrapper {
+.input-1 ::v-deep(.el-input__wrapper) {
   padding: 1px !important;
 }
 
-::v-deep .cell {
+::v-deep(.cell) {
  padding-left: 8px !important;
+}
+
+::v-deep(.el-form-item__label) {
+  background-color: rgb(240, 240, 240);
+  border: 1px solid var(--el-border-color);
 }
 
 </style>

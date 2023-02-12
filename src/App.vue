@@ -2,26 +2,24 @@
   <div class="common-layout">
     <el-container>
       <ChooseAside @handleNodeClick="addTab"/>
-      <el-container>
-        <el-main style="padding: 0px 60px;">
-          <el-tabs
-            v-model="editableTabsValue"
-            type="card"
-            class="demo-tabs"
-            closable
-            @tab-remove="removeTab"
+      <el-main style="padding: 0px 10px;">
+        <el-tabs
+          v-model="editableTabsValue"
+          type="card"
+          class="demo-tabs"
+          closable
+          @tab-remove="removeTab"
+        >
+          <el-tab-pane
+            v-for="item in editableTabs"
+            :key="item.name"
+            :label="item.title"
+            :name="item.name"
           >
-            <el-tab-pane
-              v-for="item in editableTabs"
-              :key="item.name"
-              :label="item.title"
-              :name="item.name"
-            >
-              <component :is="item.content"></component>
-            </el-tab-pane>
-          </el-tabs>
-        </el-main>
-      </el-container>
+            <component :is="item.content"></component>
+          </el-tab-pane>
+        </el-tabs>
+      </el-main>
     </el-container>
   </div>
 </template>
@@ -89,6 +87,7 @@ export default {
         case '7':
         case '8':
         case '9':
+          e.preventDefault()
           for (let i = 0; i < this.editableTabs.length; i++) {
             if (this.editableTabs[i].name == e.key) {
               this.editableTabsValue = ref(e.key)
